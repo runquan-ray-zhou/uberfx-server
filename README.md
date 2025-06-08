@@ -21,3 +21,9 @@ $ go mod tidy
 ```
 $ go run main.go
 ```
+
+### Health Check
+
+```
+$ curl -X GET http://localhost:8080/
+```

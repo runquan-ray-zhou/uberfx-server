@@ -2,9 +2,7 @@ package rest
 
 import (
 	"fmt"
-	"io"
 	"net/http"
-	"os"
 
 	"go.uber.org/fx"
 )
@@ -21,9 +19,8 @@ func NewHandler() *Handler {
 }
 
 func (*Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	if _, err := io.Copy(w, r.Body); err != nil {
-		fmt.Fprintln(os.Stderr, "Failed to handle request:", err)
-	}
+	w.WriteHeader(http.StatusOK)
+	fmt.Fprintln(w, "The Multi App Central Backend Server is Running")
 }
 
 func NewServeMux(h *Handler) *http.ServeMux {

@@ -2,6 +2,12 @@
 
 This central backend server will serve as the backbone to all my current and future apps to handle calling external APIs, data storage, logging, auth and so forth. Built with uber's Fx application framework in Go.
 
+Currently serving the following apps.
+
+- [https://linknyc-finder.netlify.app/](https://linknyc-finder.netlify.app/)
+- [https://pocket-dictionary-app.netlify.app/](https://pocket-dictionary-app.netlify.app/)
+- [https://quiz-me-trivia-app.netlify.app/](https://quiz-me-trivia-app.netlify.app/)
+
 ### Set Up
 
 ```

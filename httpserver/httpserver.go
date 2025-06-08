@@ -6,18 +6,25 @@ import (
 	"net"
 	"net/http"
 
+	"github.com/runquan-ray-zhou/uberfx-server/httphandler/api/linknyc"
+	"github.com/runquan-ray-zhou/uberfx-server/httphandler/api/pocketdictionary"
+	"github.com/runquan-ray-zhou/uberfx-server/httphandler/api/quizme"
+	"github.com/runquan-ray-zhou/uberfx-server/httphandler/api/rest"
 	"go.uber.org/fx"
 )
 
 var Module = fx.Options(
 	fx.Provide(
+		http.NewServeMux,
+		newAPIHandlers,
 		NewHTTPServer,
 	),
 	fx.Invoke(NewHTTPServer),
 )
 
-func NewHTTPServer(lc fx.Lifecycle, mux *http.ServeMux) *http.Server {
+func NewHTTPServer(lc fx.Lifecycle, mux *http.ServeMux, apiHandlers *APIHandlers) *http.Server {
 	srv := &http.Server{Addr: ":8080", Handler: mux}
+	RegisterAPIHandlers(mux, apiHandlers)
 	lc.Append(fx.Hook{
 		OnStart: func(ctx context.Context) error {
 			ln, err := net.Listen("tcp", srv.Addr)
@@ -33,4 +40,31 @@ func NewHTTPServer(lc fx.Lifecycle, mux *http.ServeMux) *http.Server {
 		},
 	})
 	return srv
+}
+
+type APIHandlers struct {
+	LinkNYCHandler          http.Handler
+	PocketDictionaryHandler http.Handler
+	QuizMeHandler           http.Handler
+	RestHandler             http.Handler
+}
+
+func newAPIHandlers(
+	linkNYCHandler *linknyc.Handler,
+	pocketDictionaryHandler *pocketdictionary.Handler,
+	quizMeHandler *quizme.Handler,
+	restHandler *rest.Handler) *APIHandlers {
+	return &APIHandlers{
+		LinkNYCHandler:          linkNYCHandler,
+		PocketDictionaryHandler: pocketDictionaryHandler,
+		QuizMeHandler:           quizMeHandler,
+		RestHandler:             restHandler,
+	}
+}
+
+func RegisterAPIHandlers(mux *http.ServeMux, handlers *APIHandlers) {
+	mux.Handle("/linknyc", handlers.LinkNYCHandler)
+	mux.Handle("/pocketdictionary", handlers.PocketDictionaryHandler)
+	mux.Handle("/quizme", handlers.QuizMeHandler)
+	mux.Handle("/", handlers.RestHandler)
 }

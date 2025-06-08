@@ -27,3 +27,21 @@ $ go run main.go
 ```
 $ curl -X GET http://localhost:8080/
 ```
+
+### LinkNYC URL route pattern
+
+```
+$ curl -X GET http://localhost:8080/linknyc
+```
+
+### Pocket Dictionary URL route pattern
+
+```
+$ curl -X GET http://localhost:8080/pocketdictionary
+```
+
+### Quiz Me URL route pattern
+
+```
+$ curl -X GET http://localhost:8080/quizme
+```

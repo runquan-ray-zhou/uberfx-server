@@ -18,7 +18,7 @@ func NewHandler() *Handler {
 }
 
 func (*Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Set-Cookie", "somekey=somevalue")
+	w.Header().Set("Set-Cookie", "somekey=somevalue") //Cookie sample
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	fmt.Fprintln(w, `{"message": "Quiz-Me Handler"}`)

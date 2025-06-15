@@ -11,6 +11,7 @@ import (
 	"github.com/runquan-ray-zhou/uberfx-server/httphandler/api/quizme"
 	"github.com/runquan-ray-zhou/uberfx-server/httphandler/api/rest"
 	"github.com/runquan-ray-zhou/uberfx-server/httphandler/api/rrunquanzhou"
+	"github.com/runquan-ray-zhou/uberfx-server/middleware/cors"
 	"go.uber.org/fx"
 )
 
@@ -24,8 +25,9 @@ var Module = fx.Options(
 )
 
 func NewHTTPServer(lc fx.Lifecycle, mux *http.ServeMux, apiHandlers *APIHandlers) *http.Server {
-	srv := &http.Server{Addr: ":8080", Handler: mux}
 	RegisterAPIHandlers(mux, apiHandlers)
+	handlerWithCORS := cors.CheckCORS(mux)
+	srv := &http.Server{Addr: ":8080", Handler: handlerWithCORS}
 	lc.Append(fx.Hook{
 		OnStart: func(ctx context.Context) error {
 			ln, err := net.Listen("tcp", srv.Addr)

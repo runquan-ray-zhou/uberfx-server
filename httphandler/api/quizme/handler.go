@@ -20,5 +20,5 @@ func NewHandler() *Handler {
 func (*Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	w.Header().Set("Content-Type", "application/json")
-	fmt.Fprintln(w, `{"message": "QuizMe Handler"}`)
+	fmt.Fprintln(w, `{"message": "Quiz-Me Handler"}`)
 }

@@ -51,3 +51,13 @@ $ curl -X GET http://localhost:8080/pocketdictionary
 ```
 $ curl -X GET http://localhost:8080/quizme
 ```
+
+### Runquan (Ray) Zhou's Website URL route pattern
+
+```
+$ curl -X GET http://localhost:8080/ray
+```
+
+### Helpful References
+
+[Cors Middleware for Go](https://eli.thegreenplace.net/2023/introduction-to-cors-for-go-programmers/)

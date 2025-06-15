@@ -2,22 +2,38 @@ package quizme
 
 import (
 	"fmt"
+	"io"
 	"net/http"
 
 	"go.uber.org/fx"
+	"go.uber.org/zap"
 )
 
 var Module = fx.Provide(
 	NewHandler,
 )
 
-type Handler struct{}
+type Params struct {
+	fx.In
 
-func NewHandler() *Handler {
-	return &Handler{}
+	Zap *zap.Logger // logging
+	// calling client
+	// database
+	// auth
 }
 
-func (*Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+type Handler struct {
+	logger *zap.Logger
+}
+
+func NewHandler(p Params) *Handler {
+	return &Handler{p.Zap}
+}
+
+func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	if _, err := io.Copy(w, r.Body); err != nil {
+		h.logger.Warn("Failed to handle request", zap.Error(err))
+	}
 	w.Header().Set("Set-Cookie", "somekey=somevalue") //Cookie sample
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)

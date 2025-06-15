@@ -2,7 +2,6 @@ package httpserver
 
 import (
 	"context"
-	"fmt"
 	"net"
 	"net/http"
 
@@ -13,6 +12,9 @@ import (
 	"github.com/runquan-ray-zhou/uberfx-server/httphandler/api/rrunquanzhou"
 	"github.com/runquan-ray-zhou/uberfx-server/middleware/cors"
 	"go.uber.org/fx"
+
+	"go.uber.org/fx/fxevent"
+	"go.uber.org/zap"
 )
 
 var Module = fx.Options(
@@ -20,11 +22,15 @@ var Module = fx.Options(
 		http.NewServeMux,
 		newAPIHandlers,
 		NewHTTPServer,
+		zap.NewProduction,
 	),
 	fx.Invoke(NewHTTPServer),
+	fx.WithLogger(func(log *zap.Logger) fxevent.Logger {
+		return &fxevent.ZapLogger{Logger: log}
+	}),
 )
 
-func NewHTTPServer(lc fx.Lifecycle, mux *http.ServeMux, apiHandlers *APIHandlers) *http.Server {
+func NewHTTPServer(lc fx.Lifecycle, mux *http.ServeMux, apiHandlers *APIHandlers, log *zap.Logger) *http.Server {
 	RegisterAPIHandlers(mux, apiHandlers)
 	handlerWithCORS := cors.CheckCORS(mux)
 	srv := &http.Server{Addr: ":8080", Handler: handlerWithCORS}
@@ -34,7 +40,7 @@ func NewHTTPServer(lc fx.Lifecycle, mux *http.ServeMux, apiHandlers *APIHandlers
 			if err != nil {
 				return err
 			}
-			fmt.Println("Starting HTTP server at", srv.Addr)
+			log.Info("Starting HTTP server", zap.String("addr", srv.Addr))
 			go srv.Serve(ln)
 			return nil
 		},

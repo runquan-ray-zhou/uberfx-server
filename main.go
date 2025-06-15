@@ -5,6 +5,7 @@ import (
 	"github.com/runquan-ray-zhou/uberfx-server/httphandler/api/pocketdictionary"
 	"github.com/runquan-ray-zhou/uberfx-server/httphandler/api/quizme"
 	"github.com/runquan-ray-zhou/uberfx-server/httphandler/api/rest"
+	"github.com/runquan-ray-zhou/uberfx-server/httphandler/api/rrunquanzhou"
 	"github.com/runquan-ray-zhou/uberfx-server/httpserver"
 	"go.uber.org/fx"
 )
@@ -19,6 +20,7 @@ func opts() fx.Option {
 		pocketdictionary.Module,
 		quizme.Module,
 		rest.Module,
+		rrunquanzhou.Module,
 		httpserver.Module,
 	)
 }

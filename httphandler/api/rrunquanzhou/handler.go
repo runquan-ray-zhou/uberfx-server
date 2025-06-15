@@ -1,4 +1,4 @@
-package rest
+package rrunquanzhou
 
 import (
 	"fmt"
@@ -20,5 +20,5 @@ func NewHandler() *Handler {
 func (*Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	w.Header().Set("Content-Type", "application/json")
-	fmt.Fprintln(w, `{"message": "The Multi App Central Backend Server is Running"}`)
+	fmt.Fprintln(w, `{"message": "Runquan (Ray) Zhou's Website Handler"}`)
 }

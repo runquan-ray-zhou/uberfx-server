@@ -10,6 +10,7 @@ import (
 	"github.com/runquan-ray-zhou/uberfx-server/httphandler/api/pocketdictionary"
 	"github.com/runquan-ray-zhou/uberfx-server/httphandler/api/quizme"
 	"github.com/runquan-ray-zhou/uberfx-server/httphandler/api/rest"
+	"github.com/runquan-ray-zhou/uberfx-server/httphandler/api/rrunquanzhou"
 	"go.uber.org/fx"
 )
 
@@ -47,18 +48,21 @@ type APIHandlers struct {
 	PocketDictionaryHandler http.Handler
 	QuizMeHandler           http.Handler
 	RestHandler             http.Handler
+	RayHandler              http.Handler
 }
 
 func newAPIHandlers(
 	linkNYCHandler *linknyc.Handler,
 	pocketDictionaryHandler *pocketdictionary.Handler,
 	quizMeHandler *quizme.Handler,
-	restHandler *rest.Handler) *APIHandlers {
+	restHandler *rest.Handler,
+	rayHandler *rrunquanzhou.Handler) *APIHandlers {
 	return &APIHandlers{
 		LinkNYCHandler:          linkNYCHandler,
 		PocketDictionaryHandler: pocketDictionaryHandler,
 		QuizMeHandler:           quizMeHandler,
 		RestHandler:             restHandler,
+		RayHandler:              rayHandler,
 	}
 }
 
@@ -66,5 +70,6 @@ func RegisterAPIHandlers(mux *http.ServeMux, handlers *APIHandlers) {
 	mux.Handle("/linknyc", handlers.LinkNYCHandler)
 	mux.Handle("/pocketdictionary", handlers.PocketDictionaryHandler)
 	mux.Handle("/quizme", handlers.QuizMeHandler)
+	mux.Handle("/ray", handlers.RayHandler)
 	mux.Handle("/", handlers.RestHandler)
 }

@@ -2,11 +2,14 @@ module github.com/runquan-ray-zhou/uberfx-server
 
 go 1.23.5
 
-require go.uber.org/fx v1.24.0
+require (
+	github.com/robfig/cron/v3 v3.0.1
+	go.uber.org/fx v1.24.0
+	go.uber.org/zap v1.26.0
+)
 
 require (
 	go.uber.org/dig v1.19.0 // indirect
 	go.uber.org/multierr v1.10.0 // indirect
-	go.uber.org/zap v1.26.0 // indirect
 	golang.org/x/sys v0.0.0-20220412211240-33da011f77ad // indirect
 )

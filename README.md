@@ -61,5 +61,5 @@ $ curl -X GET http://localhost:8080/ray
 
 ### Helpful References
 
-[Uber Fx Framework](https://uber-go.github.io/fx/index.html)
-[Cors Middleware for Go](https://eli.thegreenplace.net/2023/introduction-to-cors-for-go-programmers/)
+- [Uber Fx Framework](https://uber-go.github.io/fx/index.html)
+- [Cors Middleware for Go](https://eli.thegreenplace.net/2023/introduction-to-cors-for-go-programmers/)

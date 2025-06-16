@@ -23,7 +23,7 @@ type Params struct {
 	fx.In
 
 	Zap    *zap.Logger       // logging
-	Client *client.APIClient // calling client
+	Client *client.APIClient // client
 	// database
 	// auth
 }

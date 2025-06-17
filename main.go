@@ -7,6 +7,7 @@ import (
 	"github.com/runquan-ray-zhou/uberfx-server/httphandler/api/rest"
 	"github.com/runquan-ray-zhou/uberfx-server/httphandler/api/rrunquanzhou"
 	"github.com/runquan-ray-zhou/uberfx-server/httpserver"
+	"github.com/runquan-ray-zhou/uberfx-server/util/cron"
 	"go.uber.org/fx"
 )
 
@@ -22,5 +23,6 @@ func opts() fx.Option {
 		rest.Module,
 		rrunquanzhou.Module,
 		httpserver.Module,
+		cron.Module,
 	)
 }

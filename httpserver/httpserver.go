@@ -13,7 +13,6 @@ import (
 	"github.com/runquan-ray-zhou/uberfx-server/middleware/cors"
 	"go.uber.org/fx"
 
-	"go.uber.org/fx/fxevent"
 	"go.uber.org/zap"
 )
 
@@ -25,9 +24,6 @@ var Module = fx.Options(
 		zap.NewProduction,
 	),
 	fx.Invoke(NewHTTPServer),
-	fx.WithLogger(func(log *zap.Logger) fxevent.Logger {
-		return &fxevent.ZapLogger{Logger: log}
-	}),
 )
 
 func NewHTTPServer(lc fx.Lifecycle, mux *http.ServeMux, apiHandlers *APIHandlers, log *zap.Logger) *http.Server {

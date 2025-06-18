@@ -17,12 +17,12 @@ func main() {
 
 func opts() fx.Option {
 	return fx.Options(
-		linknyc.Module,
-		pocketdictionary.Module,
-		quizme.Module,
-		rest.Module,
-		rrunquanzhou.Module,
-		httpserver.Module,
-		cron.Module,
+		linknyc.Module,          // linknyc
+		pocketdictionary.Module, // pocket dictionary
+		quizme.Module,           // quiz-me
+		rrunquanzhou.Module,     // personal website
+		rest.Module,             // health check
+		httpserver.Module,       // httpserver
+		cron.Module,             // cron job
 	)
 }

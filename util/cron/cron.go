@@ -17,7 +17,7 @@ func NewCronJob() {
 
 	c := cron.New()
 
-	// Schedule the job to run every 1 minutes
+	// Schedule the job to ping backend server every 14 minutes to keep it running
 	c.AddFunc("@every 14m", func() {
 		resp, err := http.Get("http://localhost:8080/") // rest handler endpoint
 		if err != nil {

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/runquan-ray-zhou/uberfx-server/database"
 	"github.com/runquan-ray-zhou/uberfx-server/httphandler/api/linknyc"
 	"github.com/runquan-ray-zhou/uberfx-server/httphandler/api/pocketdictionary"
 	"github.com/runquan-ray-zhou/uberfx-server/httphandler/api/quizme"
@@ -24,5 +25,6 @@ func opts() fx.Option {
 		rest.Module,             // health check
 		httpserver.Module,       // httpserver
 		cron.Module,             // cron job
+		database.Module,         // database
 	)
 }

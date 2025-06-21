@@ -59,6 +59,32 @@ $ curl -X GET http://localhost:8080/quizme
 $ curl -X GET http://localhost:8080/ray
 ```
 
+### PSQL commands
+
+open psql
+
+```
+$ psql
+```
+
+connect to database
+
+```
+$ \c ufx_server
+```
+
+see tables
+
+```
+$ \dt
+```
+
+quit
+
+```
+$ \q
+```
+
 ### Helpful References
 
 - [Uber Fx Framework](https://uber-go.github.io/fx/index.html)

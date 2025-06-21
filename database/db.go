@@ -4,27 +4,38 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
-	"log"
 	"os"
 	"time"
 
 	_ "github.com/jackc/pgx/v5/stdlib"
+	"github.com/joho/godotenv"
 	"go.uber.org/fx"
 )
 
-var Module = fx.Provide(
-	InitDB,
+var Module = fx.Options(
+	fx.Provide(
+		InitDB,
+	),
+	fx.Invoke(func(db *sql.DB) {
+		fmt.Println("Database initialized")
+	}),
 )
 
 var DB *sql.DB
 
-func InitDB() *sql.DB {
+func InitDB() (*sql.DB, error) {
 	var err error
 
-	// Option 1: use DATABASE_URL from environment (e.g., Render)
+	// load .env file with godotenv
+	err = godotenv.Load()
+	if err != nil {
+		return nil, fmt.Errorf("no .env file found: %w", err)
+	}
+
+	// connect to render when database is online
 	dsn := os.Getenv("DATABASE_URL")
 	if dsn == "" {
-		// Option 2: use individual connection values from .env
+		// use individual connection values from .env
 		host := os.Getenv("PG_HOST")
 		port := os.Getenv("PG_PORT")
 		user := os.Getenv("PG_USER")
@@ -35,29 +46,32 @@ func InitDB() *sql.DB {
 
 	DB, err = sql.Open("pgx", dsn)
 	if err != nil {
-		log.Fatalf("Could not open database: %v", err)
+		return nil, fmt.Errorf("could not open database: %w", err)
 	}
 
 	// Test connection
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
-	if err := DB.PingContext(ctx); err != nil {
-		log.Fatalf("Could not ping database: %v", err)
+
+	err = DB.PingContext(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("could not connect to database: %w", err)
 	}
 
 	// Set connection pool options
 	DB.SetMaxOpenConns(10)
 	DB.SetMaxIdleConns(5)
 
-	// Run schema migration or setup
-	if err := createTables(DB); err != nil {
-		log.Fatalf("Failed to create tables: %v", err)
+	// createTable
+	err = createTables(DB)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create tables: %w", err)
 	}
 
-	return DB
+	return DB, nil
 }
 
-func createTables(DB *sql.DB) error {
+func createTables(db *sql.DB) error {
 	query := `
 	CREATE TABLE IF NOT EXISTS users (
 		id SERIAL PRIMARY KEY,
@@ -66,6 +80,9 @@ func createTables(DB *sql.DB) error {
 		created_at TIMESTAMPTZ DEFAULT now()
 	);
 	`
-	_, err := DB.Exec(query)
-	return err
+	_, err := db.Exec(query)
+	if err != nil {
+		return fmt.Errorf("failed to exec query: %w", err)
+	}
+	return nil
 }

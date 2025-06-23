@@ -24,18 +24,17 @@ var Module = fx.Options(
 var DB *sql.DB
 
 func InitDB() (*sql.DB, error) {
-	var err error
 
-	// load .env file with godotenv
-	err = godotenv.Load()
+	// Load .env file with godotenv
+	err := godotenv.Load()
 	if err != nil {
 		return nil, fmt.Errorf("no .env file found: %w", err)
 	}
 
-	// connect to render when database is online
+	// Connect to database, if set up online
 	dsn := os.Getenv("DATABASE_URL")
 	if dsn == "" {
-		// use individual connection values from .env
+		// Use individual connection values from .env
 		host := os.Getenv("PG_HOST")
 		port := os.Getenv("PG_PORT")
 		user := os.Getenv("PG_USER")
@@ -44,7 +43,7 @@ func InitDB() (*sql.DB, error) {
 			host, port, user, database)
 	}
 
-	DB, err = sql.Open("pgx", dsn)
+	DB, err := sql.Open("pgx", dsn)
 	if err != nil {
 		return nil, fmt.Errorf("could not open database: %w", err)
 	}
@@ -71,6 +70,7 @@ func InitDB() (*sql.DB, error) {
 	return DB, nil
 }
 
+// createTables function create table in database
 func createTables(db *sql.DB) error {
 	query := `
 	CREATE TABLE IF NOT EXISTS users (
